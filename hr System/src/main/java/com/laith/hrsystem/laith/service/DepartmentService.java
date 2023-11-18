@@ -42,7 +42,6 @@ public class DepartmentService {
 
 
     public Department updateDepartment(DepartmentDto departmentDto) {
-
         Department department = departmentRepository.findById(departmentDto.getId()).orElseThrow(
                 () -> new NotFoundDepartmentException("you cant update department with  id " + departmentDto.getId()
                         + " because there is no department with such id" + departmentDto.getId()));

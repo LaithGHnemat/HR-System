@@ -40,9 +40,7 @@ public class HrConfiguration {
 
     @Bean
     CommandLineRunner commandLineRunner() {
-        return args -> {
-            insertData();
-        };
+        return args -> insertData();
     }
 
     private void insertData() {
@@ -53,36 +51,32 @@ public class HrConfiguration {
         directorate1.setPhone("sssssssssss");
 
         Directorate directorate2= new Directorate();
-        directorate2.setName("Directorate1");
+        directorate2.setName("Directorate2");
         directorate2.setCenter("dcc");
         directorate2.setPhone("sssssssssss");
 
         Directorate directorate3= new Directorate();
-        directorate3.setName("Directorate1");
+        directorate3.setName("Directorate3");
         directorate3.setCenter("dcc");
         directorate3.setPhone("sssssssssss");
 
 
 
 
-
-
-
-
         Department department1 = new Department();
-        department1.setId(Long.valueOf(1));
+        department1.setId(1L);
         department1.setLocation("Amman");
         department1.setName("IT");
         department1.setDirectorate(directorate1);
 
         Department department2 = new Department();
-        department2.setId(Long.valueOf(2));
+        department2.setId(2L);
         department2.setLocation("Amman");
         department2.setName("Management");
         department2.setDirectorate(directorate2);
 
         Department department3 = new Department();
-        department3.setId(Long.valueOf(3));
+        department3.setId(3L);
         department3.setLocation("Amman");
         department3.setName("Telecommunications");
         department3.setDirectorate(directorate3);
@@ -96,9 +90,13 @@ public class HrConfiguration {
         karlo.setName("karlo");
 
 
-        Employee nedal = new Employee("nedal", "nedal@yahoo.com", 500.2, LocalDate.now().minusDays(1), department1, zedan);
-        Employee laith = new Employee("laith", "laith@yahoo.com", 700.2, LocalDate.now().minusDays(1), department2, zedan);
-        Employee mohamaad = new Employee("mohamaad", "mohamaad@yahoo.com", 500.2, LocalDate.now().minusDays(2), department3, karlo);
+        Employee nedal = new Employee("nedal", "nedal@yahoo.com",
+                500.2, LocalDate.now().minusDays(1), department1, zedan);
+        Employee laith = new Employee("laith",
+                "laith@yahoo.com", 700.2, LocalDate.now().minusDays(1), department2, zedan);
+        laith.setDeleted(true);
+        Employee mohamaad = new Employee("mohamaad",
+                "mohamaad@yahoo.com", 500.2, LocalDate.now().minusDays(2), department3, karlo);
 
         Leave nedalLeave = new Leave(LocalDate.now(),
                 LocalTime.now(), LocalTime.now().plusHours(2),
@@ -118,10 +116,10 @@ public class HrConfiguration {
         fornedal.add(nedalLeave);
         managerRepository.saveAll(List.of(karlo, zedan));
 
-       // directorateRepository.saveAll(List.of(directorate1, directorate2,directorate3));
+
 
         departmentRepository.saveAll(List.of(department1, department2, department3));
-        directorateRepository.saveAll(List.of(directorate1, directorate2,directorate3));
+
 
         employeeRepository.saveAll(List.of(nedal, laith, mohamaad));
         leaveRepository.saveAll(List.of(laithLeave, nedalLeave,laithLeave2));

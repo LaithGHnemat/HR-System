@@ -67,23 +67,47 @@ public class EmployeeController {
     }
 
     @GetMapping("/findByDepartment/{deptId}")
-    public ResponseEntity<?> getEmployeeByDeptId(@PathVariable("deptId")Long deptId ) {
+    public ResponseEntity<?> getEmployeeByDeptId(@PathVariable("deptId") Long deptId) {
         return ResponseEntity.ok(employeeService.findByDepartment(deptId));
     }
 
     @PostMapping("/requestLeave/{employeeId}")
-    public ResponseEntity<?> requestLeave(@PathVariable("employeeId")Long employeeId,@RequestBody LeaveDto leaveDto) {
-        employeeService.addLeave(employeeId,leaveDto);
+    public ResponseEntity<?> requestLeave(@PathVariable("employeeId") Long employeeId, @RequestBody LeaveDto leaveDto) {
+        employeeService.addLeave(employeeId, leaveDto);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-     @GetMapping("/getLeaves/{from}/{to}/{employeeId}")
+
+    @GetMapping("/getLeaves/{from}/{to}/{employeeId}")
     public ResponseEntity<?> getMyLeave(@PathVariable("from") String from,
                                         @PathVariable("to") String to,
                                         @PathVariable("employeeId") Long employeeId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDateFrom = LocalDate.parse(from, formatter);
         LocalDate localDateTo = LocalDate.parse(to, formatter);
-        return ResponseEntity.ok(employeeService.emttpl(localDateFrom,localDateTo,employeeId));
+        return ResponseEntity.ok(employeeService.emttpl(localDateFrom, localDateTo, employeeId));
+    }
+
+    @GetMapping("/getLeavesUsingJPQL/{from}/{to}/{employeeId}")
+    public ResponseEntity<?> getMyLeaveUsingJPQLQuere(@PathVariable("from") String from,
+                                                     @PathVariable("to") String to,
+                                                     @PathVariable("employeeId") Long employeeId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDateFrom = LocalDate.parse(from, formatter);
+        LocalDate localDateTo = LocalDate.parse(to, formatter);
+        return ResponseEntity.ok(employeeService.gatUsingJPQL(localDateFrom, localDateTo, employeeId));
+    }
+
+    // soft delete and like this.
+    @DeleteMapping("/soft-delete/{id}")
+    public ResponseEntity<?> employeeSoftDelete(@PathVariable("id") Long id) {
+        employeeService.softDelete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/allDeleted")
+    public ResponseEntity<List<Employee>> getAllDeletedEmployees() {
+        List<Employee> employees = employeeService.gatAllDeletedEmployee();
+        return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
 }

@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class DirectorateDto {
+
     private Long id;
     private String name;
     private String center;
@@ -21,6 +22,7 @@ public class DirectorateDto {
         directorate.setName(directorateDto.getName());
         directorate.setPhone(directorateDto.getPhone());
         directorate.setCenter(directorateDto.getCenter());
+        // todo change this,cause: it dose not pass the id of department and in some method it will arrive as null
         return directorate;
     }
 }

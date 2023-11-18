@@ -1,7 +1,7 @@
 package com.laith.hrsystem.laith.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.laith.hrsystem.laith.base.BaseEntity;
 import com.laith.hrsystem.laith.enums.LeaveStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -17,18 +16,12 @@ import java.time.LocalTime;
 @Table(name = "leave")
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-public class Leave implements Serializable {
-    private static final long serialVersionUID = 8536165658955982507L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+public class Leave extends BaseEntity<Long> {
     @Column(name = "creationDate")
-   private LocalDate creationDate;
-   private LocalTime leaveFrom;
-   private LocalTime leaveTo;
+    private LocalDate creationDate;
+    private LocalTime leaveFrom;
+    private LocalTime leaveTo;
     private String description;
     @Enumerated(EnumType.STRING)
     private LeaveStatus leaveStatus;

@@ -17,4 +17,12 @@ public interface LeaveRepository extends JpaRepository<Leave, Long> {
     List<Leave> filter(@Param("from")LocalDate from,
                       @Param("to") LocalDate to,
                       @Param("empId")Long employeeId);
+
+    @Query("SELECT l FROM Leave l where l.creationDate between :from and :to and l.employee.id=:employeeId")
+     List<Leave> getListByCreationDateBetweenAndEmployeeId(@Param("from")LocalDate from,
+                                                                 @Param("to") LocalDate to,
+                                                                 @Param("employeeId") Long  categoryId);
+
+
+
 }

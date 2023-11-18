@@ -2,13 +2,16 @@ package com.laith.hrsystem.laith.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.laith.hrsystem.laith.base.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
+import java.io.Serial;
 import java.util.List;
 
 @Entity
@@ -17,16 +20,13 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Manager implements Serializable {
-    private static final long serialVersionUID = 7L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private Long id;
+public class Manager extends BaseEntity<Long> {
     private String name;
-
-    @OneToMany(mappedBy = "manager", cascade = {CascadeType.DETACH,
-            CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "manager", cascade = {
+            CascadeType.DETACH,
+            CascadeType.REFRESH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST})
     @JsonManagedReference
     private List<Employee> employees;
 
