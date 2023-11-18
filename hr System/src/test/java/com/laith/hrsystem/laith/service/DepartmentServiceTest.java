@@ -22,7 +22,6 @@ public class DepartmentServiceTest {
 
     @Test
     public void findDepartmentByIdTest() {
-
         Department department1 = new Department();
         department1.setId(1L);
         department1.setLocation("Amman");
@@ -30,6 +29,7 @@ public class DepartmentServiceTest {
         Mockito.when(departmentRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(department1));
           Department  department= departmentService.findDepartmentById(44L);
         assertEquals("IT", department.getName());
+        // note: the department with id 44L will return even our dept id is 1L case : we use Mockito.anyLong()
     }
 
 }
