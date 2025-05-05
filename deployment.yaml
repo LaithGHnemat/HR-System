@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: h2-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: h2-app
+  template:
+    metadata:
+      labels:
+        app: h2-app
+    spec:
+      containers:
+        - name: h2-app
+          image: laithghnemat/h2-app:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: h2-app
+spec:
+  selector:
+    app: h2-app
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30080
