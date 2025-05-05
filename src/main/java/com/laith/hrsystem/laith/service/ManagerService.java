@@ -14,6 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Service
 @Log4j2
 public class ManagerService {
@@ -31,21 +38,30 @@ public class ManagerService {
                         new ManagerNotFoundException("there is no manager with  id : " + managerId));
         Employee employee = employeeService.findEmployeeById(employeeId);
 
-        if (manager.getId() != employee.getManager().getId()) {
+        if (!Objects.equals(manager.getId(), employee.getManager().getId())) {
             throw new NotCorrectManagerException("this employee dose not managed by that manager");
         }
         Leave leave = leaveRepository.findById(leaveId)
                 .orElseThrow(() ->
                         new LeaveNotFoundException("there is no Leave with  id : " + leaveId));
-        if (leave.getEmployee().getId() != employeeId) {
+        if (!Objects.equals(leave.getEmployee().getId(), employeeId)) {
             throw new LeaveNotFoundException("there is no leave for this employee with this id");
         }
-        if(leave.getLeaveStatus()!= LeaveStatus.PENDING){
+        if (leave.getLeaveStatus() != LeaveStatus.PENDING) {
             throw new LeaveNotFoundException("this leave is not pending, you cant approve it!");
         }
         leave.setLeaveStatus(LeaveStatus.APPROVED);
         log.info("Leave has been approved Successfully");
-       return leaveRepository.save(leave);
+        return leaveRepository.save(leave);
 
+    }
+
+    public List<Leave> displayAllPendingLeaves(Long managerId) {
+        Manager manager = managerRepository.findById(managerId)
+                .orElseThrow(() -> new ManagerNotFoundException("There is no manager with ID: " + managerId));
+        return manager.getEmployees().stream()
+                .flatMap(employee -> employee.getLeaves().stream())
+                .filter(leave -> leave.getLeaveStatus().toString().equalsIgnoreCase(LeaveStatus.PENDING.toString()))
+                .collect(Collectors.toList());
     }
 }

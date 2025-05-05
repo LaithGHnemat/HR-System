@@ -2,14 +2,10 @@ package com.laith.hrsystem.laith.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.laith.hrsystem.laith.base.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -18,15 +14,11 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Department implements Serializable {
-    private static final long serialVersionUID = 6L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private Long id;
+@Builder
+public class Department extends BaseEntity<Long> {
+
     private String name;
     private String location;
-    LocalDate creationDate;
     @OneToMany(mappedBy = "department", cascade = {
             CascadeType.DETACH,
             CascadeType.REFRESH,
